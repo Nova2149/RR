@@ -1,0 +1,16 @@
+news_home_page="http://localhost:7000/immigration-canada/news-home-admin"
+add_new_news="http://localhost:7000/immigration-canada/news-section"
+edit_news="http://localhost:7000/immigration-canada/news-edit-admin"
+webforms_home_page-admin=http://localhost:7000/immigration-canada/webforms
+
+
+webform_user_side=http://localhost:7000/immigration-canada/submit-webform
+
+processing_time_user_side=http://localhost:7000/immigration-canada/processing-time-user
+myapplication loginned home page:-
+http://localhost:7000/immigration-canada/home-user
+
+
+sign-in-user:http://localhost:7000/immigration-canada/user-login
+
+homepage user side=http://localhost:7000/immigration-canada/home

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
+    
+    <!-- Box  icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Overlock:wght@400;700&display=swap" rel="stylesheet"> 
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="../CSS/signin.css">
+    <link rel="stylesheet" href="../CSS/user_home.css">
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <script src="../JS/user-login.js"></script>
+    <title>Register</title>
+
+    
+    
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  onclick="l1()">MY APPLICATION</a>
+                        <a href="/immigration-canada/submit-webform">WEBFORM</a>
+                        <a href="/immigration-canada/help-section-user"> HELP CENTRE</a>
+                        <a href="/immigration-canada/processing-time-user">PROCESSING TIME</a>
+                   
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
+    <br>
+
+        <!-- Login/Signup -->
+        <center>
+        <div class="wrapper">
+          <div class="title-text">
+             <div class="title login">
+                Login / Signup
+             </div>
+             <div class="title signup">
+              Login / Signup
+             </div>
+          </div>
+          <div class="form-container">
+             <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">Login</label>
+                <label for="signup" class="slide signup">Signup</label>
+                <div class="slider-tab"></div>
+             </div>
+             <div class="form-inner">
+                <form action="/signin" method="POST" class="login">
+                   <div class="field">
+                      <label for="emailaddress">Email Address</label>
+                      <input type="text" 
+                      placeholder="Email
+                       Address" 
+                       name="email"
+                       id="user_email"
+                        required>
+                   </div>
+                   <br>
+                   <div class="field">
+                      <label for="password">Password</label>
+                      <input type="password" 
+                      placeholder="Password"
+                      id="user_password"
+                       name="password"
+                        required>
+                   </div>
+                   <br><br>
+                 
+                  
+                     <!--
+                      <div class="btn-layer"></div>
+                      <input onclick="submitForm(email.value,password.value)" type="submit" value="Login">
+                     -->
+                     <button type="button" 
+                      onclick=loginUser()
+                      class="btn btn-dark">Login</button>
+                     <br>
+                     <br>
+                     <a href="/immigration-canada/forgot-password">Forgot Password ?</a>
+                  
+                   
+                </form>
+                  <form>
+                  <div class="field signup">
+                    <label for="firstname">Family Name</label>
+                    <input type="text" 
+                    placeholder="First Name" 
+                    name="firstname"
+                    id="user_family_name"
+                     required>
+                 </div><br>
+                 <div class="field">
+                  <label for="lastname">Given Name</label>
+                  <input type="text" 
+                  placeholder="Given Name" 
+                  name="givenname"
+                  id="user_given_name"
+                   required>
+                </div>
+                
+                <br>
+                   <div class="field">
+                    <label for="phone">Phone</label>
+                    <input type="tel" 
+                    id="user_phone" 
+                    name="phone"
+                     placeholder="123-456-7890"  
+                     pattern="[0-9]{10}" required>
+                   </div>
+                   <br>
+                   <div class="field">
+                    <label for="emailaddress">Email Address</label>
+                      <input type="email" 
+                      placeholder="Email Address"
+                       name="email"
+                       id="u_email"
+                        required>
+                   </div><br>
+                   <div class="field">
+                    <label for="emailaddress">Confirm Email Address</label>
+                      <input type="email" 
+                      placeholder="Email Address"
+                      id="user_confirm_email"
+                       name="email"
+                        required>
+                   </div>
+                   <br>
+               
+                   <!-- <div class="field">
+                    <label for="address">Address</label>
+                      <input type="text" placeholder="Address" name="address" required>
+                   </div><br> -->
+                   <!-- <div class="field">
+                    <label for="phone">Phone number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="123-456-7890"  pattern="[0-9]{10}" required>
+                   </div><br> -->
+                   <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" 
+                    id="u_password" 
+                    name="password" 
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="Password" required>
+                   </div><br>
+                   <!--Code Editing Starts Here-->
+                   <div class="field">
+                       <label for="confirm_password">Confirm Password</label>
+                       <input type="password"
+                        id="user_confirm_password" 
+                        name="confirmpassword"
+                         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                         title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="Password" required >
+                   </div><br>
+                   <div class="field">
+                       <label for="ques1">
+                           What was the name of your first manager
+                       </label>
+                       <input type="text" 
+                       placeholder="Security Ques 1" 
+                       id="user_security1"
+                       name="ques1" required>
+                       
+
+                   </div>
+                   <br>
+                   <div class="field">
+                    <label for="ques2">
+                       What is the first name of your best friend
+                    </label>
+                    <input type="text"
+                     placeholder="Security Ques 2" 
+                     id="user_security2"
+                     name="ques2" required>
+                    
+
+                </div>
+                <br>
+                <div class="field">
+                    <label for="ques3">
+                        What was the name of your first pet
+                    </label>
+                    <input type="text" 
+                    placeholder="Security Ques 3"
+                     name="ques3" 
+                     id="user_security3"
+                     required>
+                    
+
+                </div>
+
+                   <!-- <div class="field">
+                    <label for="address">Address</label>
+                      <input type="text" placeholder="Address" name="address" required>
+                   </div><br>
+
+                   <div class="field">
+                       <label for="postal_code">Postal Code</label>
+                       <input type="text" id="pcode" placeholder="Postal Code"  name="postalcode"required>
+                   </div><br>
+                   <div class="field">
+                     <label for="province">Province</label>
+                      <br>
+                     <select class=" field form-control select" name="" id="user_weight_type">
+                      <option value="Alberta">Alberta</option>
+                      <option value=" British Columbia"> British Columbia</option>
+                      <option value="Manitoba">Manitoba</option>
+                      <option value="New Brunswick">New Brunswick</option>
+                      <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                      <option value="Nova Scotia">Nova Scotia</option>
+                      <option value="Ontario">Ontario</option>
+                      <option value="Prince Edward Island">Prince Edward Island</option>
+                      <option value="Quebec">Quebec</option>
+                      <option value="Saskatchewan">Saskatchewan</option>
+                   
+                    </select>
+                 
+                     
+
+                   </div> -->
+
+                  
+                    <br><br>
+
+                   <!--Code Editing ends Here-->
+                   <button type="button" 
+                    onclick=registerUser()
+                    class="btn btn-dark">Register</button>
+                </form>
+             </div><br>
+          </div>
+       </div>
+      </center><br><br>
+      
+        <!-- Footer -->
+        <footer id="footer" class="section footer">
+          <div class="container">
+          <div class="footer-container">
+              <div class="footer-center">
+             
+              <div class="footer-center">
+              <h3>CONTACT US</h3>
+              <div>
+                  <span>
+                  <i class="fas fa-map-marker-alt"></i>
+                  </span>
+                  577 Boul Henri-Bourassa E, Montréal, QC H2C 1E2
+              </div>
+              <div>
+                  <span>
+                  <i class="far fa-envelope"></i>
+                  </span>
+                  owner@info_orion.ca
+              </div>
+              <div>
+                  <span>
+                  <i class="fas fa-phone"></i>
+                  </span>
+                  123-456-7890
+              </div>
+              <div>
+                  <span>
+                  <i class="far fa-paper-plane"></i>
+                  </span>
+                  Montreal, Canada
+              </div>
+              </div>
+          </div>
+          </div>
+          </div><br>
+          <div class="copyright">
+          <center><i class='bx bx-copyright'>Copyright Reserved By Cégep de la Gaspésie et des Îles, Montreal</i></center>
+      </div>
+      </footer>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <!-- Custom Script -->
+    <script src="./javascripts/index.js"></script>
+
+    <script>
+      const loginText = document.querySelector(".title-text .login");
+      const loginForm = document.querySelector("form.login");
+      const loginBtn = document.querySelector("label.login");
+      const signupBtn = document.querySelector("label.signup");
+      const signupLink = document.querySelector("form .signup-link a");
+      signupBtn.onclick = (()=>{
+       
+        loginForm.style.marginLeft = "-50%";
+        loginText.style.marginLeft = "-50%";
+      });
+      loginBtn.onclick = (()=>{
+        loginForm.style.marginLeft = "0%";
+        loginText.style.marginLeft = "0%";
+      });
+      signupLink.onclick = (()=>{
+        
+        signupBtn.click();
+        window.alert("sometext");
+        return false;
+      });
+
+      function submitForm(email,password)
+      {
+        if(email===""||email==null)
+        {
+          alert("Please Enter Email")
+          counter=1
+        }
+        if(password===""||password==null)
+        {
+          alert("Please enter the Password")
+          counter=1
+        }
+        if(!/\S+@\S+\.\S+/.test(email))
+        {
+          alert("Invalid Email Address")
+          counter=1
+        }
+        $.ajax({
+          url:"http://localhost:7000/signin",
+          type:"POST",
+          data:{
+            "email":email,
+            "password":password
+          }
+          ,dataType:"json",
+          success:(response)=>
+          {
+            if(response.count==0)
+            {
+              console.log("Sign In Successful for User")
+              window.location.href='/home-signin'
+              
+            }
+            else if(response.count==2)
+            {
+              console.log("Sign In successful for Admin")
+              window.location.href='/admin'
+            }
+            else{
+              console.log("Sign In unsuccessful")
+              alert("Sign In Unsuccessful")
+
+            }
+            
+          }
+        })
+        //AJAX call for JWT
+        $.ajax({
+          url:"http://localhost:7000/create-token",
+          type:"POST",
+          data:{
+            "email":email
+          },
+          dataType:"json",
+          success:function(response)
+          {
+            console.log(response)
+            //Storing our token in localstorage
+            
+          }
+        })
+
+ 
+
+
+        console.log(email)
+        console.log(password)
+      }
+
+      function registerNewUser(firstname,lastname,email,password,confirmpassword,phone,address,postalcode)
+      {
+        console.log("Inside Register New User");
+        const user_firstname=firstname.value;
+        const user_lastname=lastname.value;
+        const user_email=email.value;
+        const user_password=password.value;
+        const user_confirmpassword=confirmpassword.value;
+        const user_phone=phone.value
+        const user_address=address.value
+        const user_postalcode=postalcode.value;
+
+        console.log(user_firstname)
+        console.log(user_lastname)
+        console.log(user_email)
+        console.log(user_password)
+        console.log(user_confirmpassword)
+        console.log(user_phone)
+        console.log(user_address)
+        console.log(user_postalcode)
+        console.log(user_phone.length)
+        console.log(user_postalcode.length)
+
+        var counter=0;
+     
+        if((user_firstname===""||user_firstname==null))
+        {
+          alert("Missing Fields")
+          counter=1;
+        }
+        else if(user_lastname===""||user_lastname==null){alert("Missing Fields")
+          counter=1;}
+        else if(user_email===""||user_email==null){alert("Missing Fields")
+          counter=1;}
+        else if(user_password===""||user_password==null){alert("Missing Fields")
+          counter=1;}
+        else if(user_confirmpassword===""||user_confirmpassword==null)
+        {
+          alert("Missing Fields")
+          counter=1;
+        }
+        else if(user_phone===""||user_phone==null){alert("Missing Fields")
+          counter=1;}
+        else if(user_address===""||user_address==null){alert("Missing Fields")
+          counter=1;}
+        else if(user_postalcode===""||user_postalcode==null){alert("Missing Fields")
+          counter=1;}
+        else if(!(user_password===user_confirmpassword))
+        {
+          alert("Password and Confirm Password dont match")
+          counter=1;
+        }
+        else if(user_postalcode.length!=6 || user_phone.length!=10)
+        {
+          alert("Invalid phone Number or Postal Code");
+          counter=1;
+
+        }
+        else if( !/^[0-9]+$/.test(user_phone))
+        {
+          alert("Invalid Phone Number")
+          counter=1;
+
+        }
+        else if(!/^[A-Z][0-9]\w+$/.test(user_postalcode))
+        {
+          alert("Invalid Postal Code")
+          counter=1
+        }
+        else if(!/\S+@\S+\.\S+/.test(user_email))
+        {
+          alert("Invalid Email Address")
+          counter=1
+        }
+        else{
+          //Do nothing 
+        }
+        if(counter==0)
+        {
+          $.ajax({
+            url:"http://localhost:7000/register",
+            type:"POST",
+            data:{
+              "first_name":user_firstname,
+              "last_name":user_lastname,
+              "email":user_email,
+              "password":user_password,
+              "phone":user_phone,
+              "address":user_address,
+              "postal_code":user_postalcode
+            },
+            dataType:"json",
+            success:function(response)
+            {
+              console.log(response)
+              console.log(response.counter)
+              if(response.counter==1)
+              {
+                console.log("User already exists")
+                alert("Sorry,User already exists")
+              }
+              else if(response.counter==0)
+              {
+                console.log("Registered Successfully")
+                window.location.reload();
+
+              }
+            }
+
+          })
+        }
+       
+        
+
+
+      
+        // if(counter==0)
+        // {
+        //   $.ajax({
+        //     url:"http://localhost:6050/register",
+        //     type:"POST",
+        //     data:{
+        //       "first_name":firstname,
+        //       "last_name":lastname,
+        //       "email":email,
+        //       "date_of_birth":dob,
+        //       "address":address,
+        //       "phone":phone,
+        //       "password":password,
+        //       "confirm_password":confirmpassword,
+        //       "postal_code":postalcode
+        //     }
+        //     ,
+        //     dataType:"json",
+        //     success:function(response)
+        //     {
+        //       console.log(response)
+        //     console.log(response.counter)
+        //     if(response.counter==0)
+        //     { 
+        //         alert("User Registered Successfully");
+        //         window.location.reload();
+        //     }
+        //     else{
+        //       alert("User already Exists");
+
+        //     }
+        //     }
+            
+        //   })
+
+        // }
+        
+      
+      
+      }
+      
+     
+   </script>
+   <!--Consider this script into cnsideration-->
+   <script>
+       function loginUser()
+       {
+           console.log("Login")
+           let user_email=$("#user_email").val()
+           let user_password=$("#user_password").val()
+           let counter=0;
+           if(user_email==""||user_email==null)
+           {
+               alert("Missing Fields")
+               counter=1
+           }
+           else if(user_password==""||user_password==null)
+           {
+               alert("Missing Fields")
+               counter=1
+           }
+           else {
+               //do nothing
+           }
+           if(counter==0)
+           {
+               $.ajax({
+                   url:"http://localhost:7000/immigration-canada/login",
+                   type:"POST",
+                   datatype:"json",
+                   async:false,
+                   data:{
+                       "user_email":user_email,
+                       "user_password":user_password
+                   },
+                   success:function(response)
+                   {
+                       console.log(response)
+                       if(response.count==1)
+                       {
+                           alert("Login Unsuccessfull")
+
+                       }
+                       else if(response.count==0)
+                       {
+                           window.location.href="/immigration-canada/home-user"
+                       }
+                       else{
+                           //Do Nothing
+                       }
+                   }
+               })
+               //create a token at this point as you are sign ing inside the application
+               $.ajax({
+                   url:"http://localhost:7000/immigration-canada/create-token",
+                   type:"POST",
+                   dataType:"json",
+                   async:false,
+                   data:{
+                       "user_email":user_email
+                   },
+                   success:function(response)
+                   {
+                       console.log(response)
+                       console.log("Access Token Created")
+                   }
+               })
+           }
+       }
+       //End of Sign in process
+       //Start of the Registeration process
+       function registerUser()
+       {
+           console.log("Register User clicked success")
+           let user_family_name=$("#user_family_name").val()
+           let user_given_name=$("#user_given_name").val()
+           let user_phone=$("#user_phone").val()
+           let user_email=$("#u_email").val()
+           let user_confirm_email=$("#user_confirm_email").val()
+           let user_password=$("#u_password").val()
+           let user_confirm_password=$("#user_confirm_password").val()
+           let user_security1=$("#user_security1").val()
+           let user_security2=$("#user_security2").val()
+           let user_security3=$("#user_security3").val()
+
+           console.log(user_family_name)
+           console.log(user_given_name)
+           console.log(user_phone)
+           console.log(user_email)
+           console.log(user_confirm_email)
+           console.log(user_password)
+           console.log(user_confirm_password)
+           console.log(user_security1)
+           console.log(user_security2)
+           console.log(user_security3)
+
+           console.log("--End of Input--")
+           //Validations staRT FROM HERE
+            let counter=0
+           if(user_family_name==""||user_family_name==null)
+           {
+               alert("Missing Fields")
+               counter=1
+
+           }
+           else if(user_given_name==""||user_given_name==null)
+           {
+               alert("Missing Fields")
+               counter=1
+           }
+           else if(user_phone==""||user_phone==null)
+           {
+               alert("Missing Fields")
+               counter=1
+           }
+           else if(user_email==""||user_email==null)
+           {
+               alert("Missing Fields")
+               counter=1
+           }
+           else if(user_confirm_email==""||user_confirm_email==null)
+           {
+               alert("Missing Fields")
+               counter=1
+           }
+           else if(user_password==""||user_password==null)
+           {
+                alert("Missing Fields")
+               counter=1
+           }
+           else if(user_confirm_password==""||user_confirm_password==null)
+           {
+                alert("Missing Fields")
+                counter=1
+           }
+           else if(user_security1==""||user_security1==null)
+           {
+                alert("Missing Fields")
+               counter=1
+           }
+           else if(user_security2==""||user_security2==null)
+           {
+                alert("Missing Fields")
+               counter=1
+           }
+           else if(user_security3==""||user_security3==null)
+           {
+                alert("Missing Fields")
+               counter=1
+           }
+           //Validations specifically for email
+           else if(user_email!=user_confirm_email)
+           {
+               alert("Email and Confirm Email doesn't Match")
+               counter=1
+           }
+           else if(user_password!=user_confirm_password)
+           {
+               alert("Password and Confirm Password doesn't match")
+               counter=1
+           }
+           else if(!/^[0-9]+$/.test(user_phone))
+           {
+               alert("Invalid Phone Number")
+               counter=1;
+           }
+           else if(!/\S+@\S+\.\S+/.test(user_email))
+           {
+               alert("Invalid Email Address")
+               counter=1
+           }
+           else if(user_phone.length!=10)
+           {
+               alert("Invalid Phone Number")
+               counter=1;
+           }
+           else{
+               //Do  Nothing
+           }
+
+           if(counter==0)
+           {
+               $.ajax({
+                   url:"http://localhost:7000/immigration-canada/register",
+                   type:"POST",
+                   dataType:"json",
+                   async:false,
+                   data:{
+                       "user_family_name":user_family_name,
+                       "user_given_name":user_given_name,
+                       "user_phone":user_phone,
+                       "user_email":user_email,
+                       "user_password":user_password,
+                       "user_security1":user_security1,
+                       "user_security2":user_security2,
+                       "user_security3":user_security3
+                   },
+                   success:function(response)
+                   {
+                       console.log(response)
+                       if(response.counter==1)
+                       {
+                           alert("Email ID is already Registered with an account")
+                       }
+                       else
+                       {
+                           alert("Registeration successfull")
+                           window.location.reload()
+                       }
+                   }
+               })
+           }
+       }
+   </script>
+
+</body>
+</html>

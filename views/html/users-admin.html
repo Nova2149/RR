@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+        <style>
+        .unblock{
+            background-color: #097969;
+            color:whitesmoke;
+            border-radius: 5px;
+            padding:6px;
+        }
+        .block{
+            background-color:#0047AB ;
+            color:whitesmoke;
+            border-radius: 5px;
+            padding: 6px;
+        }
+    </style>
+ 
+    <script>
+        $(function()
+        {
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/get-all-users",
+                type:'GET',
+                dataType:'json',
+                async:false,
+                success:function(response)
+                {
+                    console.log(response)
+                    buildTable(response)
+                }
+
+            })
+        })
+        function buildTable(data)
+        {   
+            console.log("Inside Build Table")
+            console.log(data)
+            let table=document.getElementById("user_info")
+            let row='';
+            for(let i=0;i<data.length;i++)
+            {
+                row+=`
+                    <tr>
+                    <td>${data[i].user_family_name}</td>
+                    <td>${data[i].user_given_name}</td>
+                    <td class="current_email">${data[i].user_email}</td>
+                    <td>${data[i].user_phone}</td>
+                    
+                    `
+                    if(data[i].user_status==0)
+                    {
+                        row+=`<td class="user_status">Blocked</td>`
+                       
+                    }
+                    else
+                    {   row+=`<td class="user_status">Active</td>`
+                       
+                    }
+                    row+=`</td><td>`
+                    if(data[i].user_status==0)
+                    {
+                      
+                        row+=`<button  id="blockButton" class="unblock" value=${i} onclick="blockUser(this.value)">Unblock</button>`
+                    }
+                    else
+                    {   
+                        row+=`<button  id="blockButton" class="block" value=${i}  onclick="blockUser(this.value)">Block</button>`
+                    }
+                    row+=`</td>
+                    <td>
+                        <button class="btn btn-danger" type="submit"
+                        onclick="removeUser('${data[i].user_email}')">
+                            Remove
+                        </button>
+                    </td>
+                    </tr>`
+
+            }
+            table.innerHTML+=row;
+
+        }
+        function removeUser(user_email)
+        {   
+            console.log("Inside Remove user function")
+
+            console.log(user_email)
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/removeuser",
+                type:"POST",
+                async:false,
+                data:{
+                    "user_email":user_email
+                },
+                success:function(response)
+                {
+                    console.log(response)
+
+                }
+            })
+            //Reload the Page
+            location.reload()
+        }
+
+        function blockUser(data)
+        {
+            let email=document.querySelectorAll(".current_email")[data].innerHTML
+            console.log(email)
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/block-user",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "user_email":email
+                },
+                async:false,
+                success:function(response)
+                {
+                    console.log(response)
+
+                }
+                
+            })
+            let buttonText=document.querySelectorAll("#blockButton")[data];
+            let statusText=document.querySelectorAll(".user_status")[data];
+            if(buttonText.innerHTML === "Block")
+            {
+                buttonText.innerHTML = "Unblock"
+                buttonText.classList.remove("block")
+                buttonText.classList.add("unblock")
+                statusText.innerHTML="Blocked"
+               
+            }
+            else{
+                buttonText.innerHTML="Block"
+                buttonText.classList.remove("unblock")
+                buttonText.classList.add("block")
+                
+             
+            }
+            //Reload the Page 
+            window.location.reload();
+
+        }
+       
+    </script>
+    <script>
+        function Logout()
+        {
+            console.log("Inside Logout")
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/admin-logout",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+            window.location.href="/immigration-canada/admin-login"
+
+        }
+    </script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  href="/immigration-canada/users">USERS</a>
+                        <a href="/immigration-canada/applications-admin">APPLICATIONS</a>
+                        <a href="/immigration-canada/news-home-admin"> NEWS SECTION</a>
+                        <a href="/immigration-canada/webforms">WEBFORMS</a>
+                        <a href="/immigration-canada/help-section">HELP CENTRE SECTION</a>
+                        <a href="/immigration-canada/processingTime" >PROCESSING TIME</a>
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+            <a onclick=Logout() class="logout_link">
+                Logout
+            </a>
+          
+        
+        
+         
+         
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <h1>IRCC Registered Users</h1>
+        </div>
+        <div class="col-xs-2"></div>
+        
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <table class="table">
+                <tr>
+                    <th>Family Name</th>
+                    <th>Given Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+
+                </tr>
+                <tbody id="user_info"></tbody>
+            </table>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+
+    
+</body>
+</html>

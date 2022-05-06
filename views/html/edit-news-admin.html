@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        textarea{
+            resize:none;
+        }
+    </style>
+    <script>
+       $(function()
+       {
+           $.ajax({
+               url:"http://localhost:7000/immigration-canada/current-news",
+               type:"GET",
+               dataType:"json",
+               success:function(response)
+               {
+                   console.log(response)
+                   enterTable(response)
+               }
+
+           })
+    })
+    function enterTable(data)
+    {
+        $("#news_title").val(data[0].news_heading)
+        $("#news_description").val(data[0].news_description)
+    }
+    function goBack()
+    {
+        window.location.href="/immigration-canada/news-home-admin"
+    }
+    function updateNewsForm()
+    {   
+        //Here we will proceed after we reach the specific point
+        let news_description=$("#news_description").val()
+        let news_heading=$("#news_title").val()
+        $.ajax({
+            url:"http://localhost:7000/immigration-canada/update-news",
+            type:"POST",
+            dataType:"json",
+            data:{
+                "news_description":news_description,
+                "news_heading":news_heading
+            },
+            success:function(response)
+            {
+                console.log(response)
+            }
+
+        })
+    }
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="row">
+                <h1>Edit Immigration News</h1>
+            </div>
+            <br>
+            <div class="row">
+                <div class="panel panel-success">
+                <div class="panel-heading">News Section</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Topic/Title</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control"
+                            id="news_title"
+                            disabled
+                            placeholder="Enter Title">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Topic Description</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <textarea name="" id="news_description" 
+                            cols="30" 
+                            rows="20"
+                            placeholder="Enter Description"
+                            class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <button class="btn btn-info" onclick="goBack()">Return</button>
+                        </div>
+                        <div class="col-xs-4">
+                          
+                        </div>
+                        <div class="col-xs-4">
+                            <button class="btn btn-info" onclick="updateNewsForm()">Update</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                </div>
+                
+
+            </div>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</body>
+</body>
+</html>

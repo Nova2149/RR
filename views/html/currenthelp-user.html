@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Section</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <link rel="stylesheet" href="../CSS/user_home.css">
+    <script src="../JS/user-login.js"></script>
+    <script>
+        $(function()
+        {
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/current-help",
+                type:"GET",
+                dataType:"json",
+                async:false,
+                success:function(response)
+                {
+                    console.log(response)
+                    buildTable(response)
+                }
+            })
+        })
+        function buildTable(data)
+        {
+            let table=document.getElementById("my_help")
+            let row=``
+            row=`
+            <h1>${data[0].help_heading}</h1>
+            <br>
+            <blockquote>
+            <p>${data[0].help_description}
+            </blockquote>`
+            table.innerHTML+=row
+        }
+        function goBack()
+        {
+            window.location.href="/immigration-canada/help-section-user"
+        }
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div class="container" id="my_help"></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-5"></div>
+        <div class="col-xs-2">
+            <button class="btn btn-danger" onclick="goBack()">
+            Go Back</button>
+        </div>
+        <div class="col-xs-5"></div>
+    </div>
+    
+</body>
+</html>

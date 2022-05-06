@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <link rel="stylesheet" href="../CSS/user_home.css">
+    <script src="../JS/user-login.js"></script>
+    <script>
+
+        $(function()
+        {
+            $.ajax({
+            url:"http://localhost:7000/immigration-canada/get-user-name",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                console.log(response[0].user_given_name)
+                editTable(response)
+            }
+        })
+        })
+        function editTable(data)
+    {
+        $(".user_name").text(data[0].user_given_name+"'s  Account")
+    }
+
+        function submitApplication()
+        {
+            console.log("Submit Application clicked successfully")
+            let user_type_of_application=document.getElementById("type_of_application").value
+            let user_ques1=document.getElementById("ques1").value
+            let user_ques2=document.getElementById("ques2").value
+            let user_ques3=document.getElementById("ques3").value
+            let user_dob=document.getElementById("dob").value
+            let user_file=document.getElementById("applicant_file").value
+            const myArray=user_file.split("\\")
+            console.log(myArray)
+            let final_file_name=myArray[myArray.length-1]
+            //console.log(final_file_name)
+
+            //To get the name of the File,the above line is returning the whole path
+            
+            let formData=new FormData()
+            let file=$("#applicant_file")[0].files[0]
+            formData.append('file',$("#applicant_file")[0].files[0])
+            console.log(file)
+            console.log(formData)
+            console.log(user_type_of_application)
+            console.log(user_ques1)
+            console.log(user_ques2)
+            console.log(user_ques3)
+            console.log(user_dob)
+            console.log(final_file_name)
+            console.log(user_file)
+
+            let counter=0
+            if(user_ques1==""||user_ques1==null){
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(user_ques2==""||user_ques2==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(user_ques3==""||user_ques3==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(user_dob==""||user_dob==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(user_file==null||user_file=="")
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else{
+                //Do Nothing
+            }
+
+            if(counter==0)
+            {   
+               // To write the appli
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/submit-application",
+                type:"POST",
+                dataType:"json",
+                async:false,
+                data:{
+                    "application_type":user_type_of_application,
+                    "ques1":user_ques1,
+                    "ques2":user_ques2,
+                    "ques3":user_ques3,
+                    "date_of_birth":user_dob,
+                    "file_name":final_file_name,
+                    
+                },
+                success:function(response)
+                {
+                    console.log(response)
+                }
+
+            })
+         //   To send the File and upload it in the respective folder
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/upload-doc",
+                type:"POST",
+                data:formData,
+                processData:false,
+                contentType:false,
+                cache:false,
+                success:function(response)
+                {
+                    console.log(response)
+                }
+
+            })
+
+            }
+            
+        }
+    </script>
+
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  onclick="l1()">MY APPLICATION</a>
+                        <a href="/immigration-canada/submit-webform">WEBFORM</a>
+                        <a href="/immigration-canada/help-section-user"> HELP CENTRE</a>
+                        <a href="/immigration-canada/processing-time-user">PROCESSING TIME</a>
+                   
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
+    <br>
+    <div class="row right_user_panel">
+        <div class="col-xs-5">
+            <h1 class="user_name"></h1>
+        </div>
+        <div class="col-xs-2"></div>
+        <div class="col-xs-5 ">
+            <a href="/immigration-canada/application" class="link-primary user_link">
+                New Application
+            </a>
+            <a href="/immigration-canada/account-profile" class="link-primary user_link">
+                Account Profile
+            </a>
+            <a onclick="LogoutUser()" class="link-primary user_link">
+                Logout
+            </a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <h1>Your Immigration Application</h1>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+           
+                <label for="">Select type of application</label>
+                
+            
+                <select class="form-control" name="" id="type_of_application">
+                    <option value="Study">Study </option>
+                    <option value="Work">Work </option>
+                    <option value="Visitor">Visitor</option>
+                    <option value="Permanent Residency">
+                        Permanent Residency
+                    </option>
+
+                </select>
+            
+            <br>
+            <label for="">
+                What you would like to do in Canada
+            </label>
+            <input type="text" class="form-control" placeholder="Enter your Response Here" id="ques1">
+            <br>
+            <label for="">
+                How long you are planning to stay in Canada
+            </label>
+            <input type="text" class="form-control" placeholder="Enter your Response Here" id="ques2">
+            <br>
+            <label for="">
+                What is your current country of Residence?If you are presently in Canada ,select Canada
+            </label>
+            <input type="text" class="form-control" placeholder="Enter Your Response Here" id="ques3">
+            <br>
+            <label for="">What is your Date of Birth ?</label>
+            <input type="date" class=" form-control" id="dob">
+            <br>
+            <h1>Your Documents</h1>
+            <br>
+            <h3>Make a pdf of all your documents and upload your file as .pdf extension</h3>
+            <input type="file" id="applicant_file" class="form-control">
+            <br>
+            <button type="button" 
+            class="btn"
+            onclick="submitApplication()">Submit</button>
+
+        
+
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    
+</body>
+</html>

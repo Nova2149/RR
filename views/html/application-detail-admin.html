@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function()
+        {
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/get-application",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                    buildTable(response)
+                }
+
+            })
+
+        })
+        var application_number;
+        function buildTable(data)
+        {   
+            application_number=data[0].application_number
+            $("#application_heading").text("Application Number: "+data[0].application_number)
+            $("#application_type").val(data[0].application_type)
+            $("#application_ques1").val(data[0].ques1)
+            $("#application_ques2").val(data[0].ques2)
+            $("#application_ques3").val(data[0].ques3)
+            $("#application_dob").val(data[0].date_of_birth)
+            $("#applicant_status").val(data[0].application_status);
+            $("#medical_status").val(data[0].medical_status)
+            $("#background_status").val(data[0].background_status)
+            $("#applicant_id").val(data[0].user_id)
+            $("#application_file_name").val(data[0].file_name)
+
+        }
+        function updateApplicationStatus()
+        {
+            console.log("Inside update Application Status")
+            let application_status=$("#applicant_status").val()
+            let medical_status=$("#medical_status").val()
+            let background_status=$("#background_status").val()
+            console.log(application_status)
+            console.log(medical_status)
+            console.log(background_staus)
+            console.log(application_number)
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/update-application-status",
+                type:"POST",
+                dataType:"json",
+                async:false,
+                data:{
+                    "application_status":application_status,
+                    "medical_status":medical_status,
+                    "background_status":background_status,
+                    "application_number":application_number
+                },
+                success:function(response)
+                {
+                    console.log(response)
+                    alert("Status updated successfully")
+
+                }
+            })
+
+        }
+        function navigateBack()
+        {
+            window.location.href="/immigration-canada/applications-admin"
+        }
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <h1>
+                IRCC APPLICATION
+            </h1>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8 panel panel-primary">
+           
+                <div class="panel-heading" id="application_heading"></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Applicant ID</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text"
+                            class="form-control"
+                            id="applicant_id"
+                            disabled>
+                        </div>
+
+                    </div>
+                    
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">
+                                Type of application
+                            </label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text"
+                             class="form-control"
+                             id="application_type"
+                              disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">What would you like to do in Canada</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text"
+                             class="form-control"
+                             id="application_ques1"
+                              disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">
+                                How long you are planning to Stay in Canada
+                            </label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text" 
+                            class="form-control"
+                            id="application_ques2"
+                             disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">
+                                What is your current country of residence
+                            </label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text" 
+                            class="form-control"
+                            id="application_ques3"
+                             disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Date of Birth</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text" 
+                            class="form-control"
+                            id="application_dob"
+                             disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Application Status</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <select name="" id="applicant_status" class="form-control">
+                                <option value="select">--Select--</option>
+                                <option value="submitted">submitted</option>
+                                <option value="approved">approved</option>
+                                <option value="rejected">rejected</option>
+                                <option value="in-Process">in-Process</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Medical status</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <select name="" id="medical_status" class="form-control">
+                                <option value="select">--Select--</option>
+                                <option value="submitted">submitted</option>
+                                <option value="approved">approved</option>
+                                <option value="rejected">rejected</option>
+                                <option value="in-Process">in-Process</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Background Status</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <select name="" id="background_status" class="form-control">
+                                <option value="select">--Select--</option>
+                                <option value="submitted">submitted</option>
+                                <option value="approved">approved</option>
+                                <option value="rejected">rejected</option>
+                                <option value="in-Process">in-Process</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">
+                                Document File Name
+                            </label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text"
+                            class="form-control"
+                            id="application_file_name"
+                            disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                        <button class="btn btn-info" onclick="navigateBack()">Return </button>
+                        </div>
+                        <div class="col-xs-4"></div>
+                        <div class="col-xs-4">
+                        <button class="btn btn-info" onclick="updateApplicationStatus()"> Update</button>
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+    </div>
+</body>
+</html>

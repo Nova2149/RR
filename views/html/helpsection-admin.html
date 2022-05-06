@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function submitHelpForm()
+        {
+            let help_heading=$("#help_title").val()
+            let help_description=$("#help_description").val()
+            console.log(help_heading)
+            console.log(help_description)
+            let counter=0
+            if(help_heading==""||help_heading==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(help_description==""||help_description==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            if(counter==0)
+            {
+                $.ajax({
+                url:"http://localhost:7000/immigration-canada/add-help",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "help_heading":help_heading,
+                    "help_description":help_description
+                },
+                success:function(response)
+                {
+                    console.log(response)
+
+                    alert("Help Added Successfully")
+                }
+            })
+            }
+           
+        }
+    </script>
+    <script>
+         function Logout()
+        {
+            console.log("Inside Logout")
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/admin-logout",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+            window.location.href="/immigration-canada/admin-login"
+
+        }
+    </script>
+    <style>
+        #help_description
+        {
+            resize:none
+        }
+    </style>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  href="/immigration-canada/users">USERS</a>
+                        <a href="/immigration-canada/applications-admin">APPLICATIONS</a>
+                        <a href="/immigration-canada/news-home-admin"> NEWS SECTION</a>
+                        <a href="/immigration-canada/webforms">WEBFORMS</a>
+                        <a href="/immigration-canada/help-section">HELP CENTRE SECTION</a>
+                        <a href="/immigration-canada/processingTime" >PROCESSING TIME</a>
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+            
+            <a onclick=Logout() class="logout_link">
+                Logout
+            </a>
+          
+        
+         
+         
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="row">
+                <h1>Add New Info to the Help Centre Section</h1>
+            </div>
+            <br>
+            <div class="row">
+                <div class="panel panel-primary">
+                <div class="panel-heading">Help Centre Section</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Topic/Title</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control"
+                            id="help_title"
+                            placeholder="Enter Title">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Topic Description</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <textarea name="" id="help_description" 
+                            cols="30" 
+                            rows="20"
+                            placeholder="Enter Description"
+                            class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4"></div>
+                        <div class="col-xs-4">
+                            <button class="btn btn-warning" onclick="submitHelpForm()">Add</button>
+                        </div>
+                        <div class="col-xs-4"></div>
+                    </div>
+
+                </div>
+
+
+                </div>
+                
+
+            </div>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</body>
+</html>

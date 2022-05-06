@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Time</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <link rel="stylesheet" href="../CSS/user_home.css">
+    <script src="../JS/user-login.js"></script>
+    <script>
+        function checkProcessingTime()
+        {
+            console.log("Processing Time clicked successfully")
+            let current_application=$("#user_application_type").val()
+            console.log(current_application)
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/get-processing-time",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "application_type":current_application
+                },
+                success:function(response)
+                {
+                    console.log(response)
+                    buildTable(response)
+                }
+            })
+
+        }
+        function buildTable(data)
+        {      
+            let table=document.getElementById("p_time_info")
+            table.innerHTML="";
+            let row=`
+                <br>
+                <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-8">
+                <h1>Result</h1>
+                <label>Processing Time</label>
+                    
+                
+                <input type="text" class="form-control" value="${data.processing_time} days "  id="p_time"/>
+                
+                </div>
+             
+                <div class="col-xs-2"></div>
+                    
+                </div>`
+                table.innerHTML+=row
+        }
+    </script>
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  onclick="l1()">MY APPLICATION</a>
+                        <a href="/immigration-canada/submit-webform">WEBFORM</a>
+                        <a href="/immigration-canada/help-section-user"> HELP CENTRE</a>
+                        <a href="/immigration-canada/processing-time-user">PROCESSING TIME</a>
+                   
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8 ">
+            <div class="processing_time_heading">
+            <h1>Get to know the Processing Time of Applications</h1>
+            <p>(These processing times are based on the processing time of 80% of applications)*</p>
+        </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-8">
+                    <h1>Select the type of your Application</h1>
+                    <select name=""
+                     id="user_application_type"
+                     class="form-control">
+                        <option value="study">Temperory Resident(Student)</option>
+                        <option value="work">Temperory Resident(Work)</option>
+                        <option value="visitor">Temperory Resident(Visitor)</option>
+                        <option value="permanent_residency">Permanent Residency</option>
+                    </select>
+                    <br>
+                    <button class="btn btn-success" onclick="checkProcessingTime()">Submit</button>
+                </div>
+                <div class="col-xs-2"></div>
+            </div>
+
+        </div>
+        <div class="col-xs-3"></div>
+    </div>
+    <br>
+    <div id="p_time_info"></div>
+    
+    
+</body>
+</html>

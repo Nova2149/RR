@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Time</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function()
+        {
+            $.ajax({
+            url:"http://localhost:7000/immigration-canada/processing-time",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                buildTable(response)
+            }
+        })
+        function buildTable(data)
+        {
+            document.getElementById("student_pt").value=data.study
+            document.getElementById("work_pt").value=data.work
+            document.getElementById("visitor_pt").value=data.visitor
+            document.getElementById("permanent_pt").value=data.permanent_residency
+        
+        }
+       
+       
+        })
+        function editProcessingTime()
+        {
+           $(".pt_input").removeAttr('disabled')
+
+        }
+        function updateProcessingTime()
+        {
+            let study=document.getElementById("student_pt").value
+            let work=document.getElementById("work_pt").value
+            let visitor=document.getElementById("visitor_pt").value
+            let permanent_residency=document.getElementById("permanent_pt").value
+            console.log(study)
+            console.log(work)
+            console.log(visitor)
+            console.log(permanent_residency)
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/processing-time",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "study":study,
+                    "work":work,
+                    "visitor":visitor,
+                    "permanent_residency":permanent_residency
+                },
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+
+        }
+    </script>
+    <script>
+          function Logout()
+        {
+            console.log("Inside Logout")
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/admin-logout",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+            window.location.href="/immigration-canada/admin-login"
+
+        }
+    </script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  href="/immigration-canada/users">USERS</a>
+                        <a href="/immigration-canada/applications-admin">APPLICATIONS</a>
+                        <a href="/immigration-canada/news-home-admin"> NEWS SECTION</a>
+                        <a href="/immigration-canada/webforms">WEBFORMS</a>
+                        <a href="/immigration-canada/help-section">HELP CENTRE SECTION</a>
+                        <a href="/immigration-canada/processingTime" >PROCESSING TIME</a>
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+            
+            
+            <a onclick=Logout() class="logout_link">
+                Logout
+            </a>
+          
+        
+         
+         
+        </div>
+    </div>
+    <div class="row">
+        <div class=col-xs-4></div>
+        <div class="col-xs-4">
+            <h1>UPDATE PROCESSING TIME</h1>
+            <br>
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="">Temperory Resident (Student)</label>
+                </div>
+                <div class="col-xs-4">
+                    <input type="text"
+                     id="student_pt"
+                      class=" pt_input form-control"
+                      disabled>
+                </div>
+                <div class="col-xs-2">
+                    (days)
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="">Temperory Resident(Work)</label>
+                </div>
+                <div class="col-xs-4">
+                    <input type="text"
+                     id="work_pt" 
+                     class="pt_input form-control"
+                     disabled>
+                </div>
+                <div class="col-xs-2">
+                    (days)
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="">Temperory Resident(Visitor)</label>
+                </div>
+                <div class="col-xs-4">
+                    <input type="text"
+                    id="visitor_pt" 
+                    class="pt_input form-control"
+                    disabled> 
+                </div>
+                <div class="col-xs-2">
+                    (days)
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-6">
+                <label for="">Permanent Resident</label>
+                </div>
+                <div class="col-xs-4">
+                    <input type="text" 
+                    id="permanent_pt" 
+                    class="pt_input form-control"
+                    disabled>
+                </div>
+                <div class="col-xs-2">
+                    (days)
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-3">
+                    <button class="btn btn-primary" 
+                    onclick=editProcessingTime()>Edit</button>
+                </div>
+                <div class="col-xs-3"></div>
+                <div class="col-xs-3">
+                    <button class="btn btn-success" 
+                    onclick=updateProcessingTime()>Update</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4"></div>
+    </div>
+    
+</body>
+</html>

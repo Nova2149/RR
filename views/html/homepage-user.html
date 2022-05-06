@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <link rel="stylesheet" href="../CSS/user_home.css">
+     <script src="../JS/user-login.js"></script>
+    
+</head>
+<script>
+    $(function()
+    {
+        $.ajax({
+            url:"http://localhost:7000/immigration-canada/getnews",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                buildTable(response)
+            }
+        })
+    })
+    function buildTable(data)
+    {
+        let table=document.getElementById("news_info")
+        let row=''
+        for(let i=0;i<data.length;i++)
+        {
+            row+=`
+            <li class="news_li"><a onclick="viewNews('${data[i].news_heading}')">
+                ${data[i].news_heading}
+                
+                </a></li>
+                <br>`
+        }
+        table.innerHTML+=row
+    }
+    function viewNews(current_news)
+    {
+        console.log(current_news)
+        $.ajax({
+            url:"http://localhost:7000/immigration-canada/current-user-news",
+            type:"POST",
+            dataType:"json",
+            async:false,
+            data:{
+                "news_heading":current_news
+            },
+            success:function(response)
+            {
+                console.log(response)
+            }
+        })
+        window.location.href="/immigration-canada/current"
+
+    }
+    function searchNews()
+    {
+        let search_text=$("#search_text").val()
+        $.ajax({
+            url:"http://localhost:7000/immigration-canada/search-entered-news",
+            type:"POST",
+            dataType:"json",
+            async:false,
+            data:{
+                "search_text":search_text
+            },
+            success:function(response)
+            {
+                console.log(response)
+            }
+        })
+        window.location.href="/immigration-canada/search"
+    }
+    
+
+</script>
+
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  onclick="l1()">MY APPLICATION</a>
+                        <a href="/immigration-canada/submit-webform">WEBFORM</a>
+                        <a href="/immigration-canada/help-section-user"> HELP CENTRE</a>
+                        <a href="/immigration-canada/processing-time-user">PROCESSING TIME</a>
+                   
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
+ 
+    <div class="row">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-4"><h1>LATEST NEWS</h1></div>
+        <div class="col-xs-2">
+            
+        </div>
+        <div class="col-xs-4">
+            <div class="input-group">
+                <input type="text" class="form-control"
+                 placeholder="Search for..."
+                 id="search_text">
+                <span class="input-group-btn">
+                  <button class="btn btn-danger"
+                   type="button"
+                   onclick="searchNews()">
+                      Search
+                  </button>
+                </span>
+            </div>
+        </div>
+        <div class="col-xs-1"></div>
+    <div>
+    <br>
+    <div class="row">
+        
+        <div class="container news_section">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Immigration News Section </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <ul id="news_info"></ul>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+      
+
+    </div>
+</body>
+</html>

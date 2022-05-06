@@ -1,0 +1,28 @@
+.right_user_panel
+{
+    margin-left: 150px;;
+}
+.user_link
+{
+    padding-left:20px;
+    padding-right:20px;
+    font-size:20px;
+}
+.processing_time_heading
+{
+    text-align: center;
+}
+.news_section
+{
+    margin-top: 100px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+.news_li
+{
+    text-decoration: none;
+}
+ul{
+    list-style-type: none;
+}

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <link rel="stylesheet" href="../CSS/user_home.css">
+    <script src="../JS/user-login.js"></script>
+    <script>
+        $(function()
+        {
+            $.ajax({
+            url:"http://localhost:7000/immigration-canada/get-user-name",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                console.log(response[0].user_given_name)
+                editTable(response)
+            }
+
+            })
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/get-account-info",
+                type:"GET",
+                dataType:"json",
+                async:false,
+                success:function(response)
+                {
+                    console.log(response)
+                    populateTable(response)
+                }
+
+            })
+        
+      
+        })
+        function populateTable(data)
+        {
+            $("#user_email").val(data[0].user_email)
+            $("#user_phone").val(data[0].user_phone)
+
+        }
+        function editTable(data)
+        {
+            $(".user_name").text(data[0].user_given_name+"'s  Account")
+        }
+        function editaccountInfo()
+        {
+            console.log("Edit Account Info Clicked Successfully")
+            $("#user_email").removeAttr("disabled")
+            $("#user_phone").removeAttr("disabled")
+            $("#update_button").removeAttr("disabled")
+        }
+        function updateAccountInfo()
+        {
+            //You need to write the validations also
+            let user_email=$("#user_email").val()
+            let user_phone=$("#user_phone").val()
+            let counter=0
+            if(user_email==""||user_email==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(user_phone==""||user_phone==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(!/\S+@\S+\.\S+/.test(user_email))
+            {
+                alert("Invalid Email")
+                counter=1;
+            }
+            else if(!/^[0-9]+$/.test(user_phone))
+            {
+                alert("Invalid Phone Number")
+                counter=1;
+            }
+            else if(user_phone.length!=10)
+            {
+                alert("Invalid Phone Number")
+                counter=1
+            }
+            else{
+                //Do Nothing
+            }
+            if(counter==0)
+            {
+                $.ajax({
+                url:"http://localhost:7000/immigration-canada/update-account-info",
+                type:"POST",
+                dataType:"json",
+                data:
+                {
+                    "user_email":user_email,
+                    "user_phone":user_phone
+
+                },
+                async:false,
+                success:function(response)
+                {
+                    console.log(response)
+                    alert("Account Info Updated")
+
+                }
+            })
+            window.location.reload();
+
+            }
+           
+        }
+        function checkPassword()
+        {
+            console.log("Inside Check Password")
+            
+            let old_password=$("#old_password").val()
+            console.log(old_password)
+            let counter=0
+            if(old_password==""||old_password==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+
+            if(counter==0)
+            {
+                $.ajax({
+                    url:"http://localhost:7000/immigration-canada/check-password",
+                    type:"POST",
+                    dataType:"json",
+                    data:{
+                        "old_password":old_password
+                    },
+                    success:function(response)
+                    {
+                        console.log(response)
+                        if(response.length!=0)
+                        {
+                            $("#new_password").removeAttr("disabled")
+                            $("#confirm_password").removeAttr("disabled")
+                            $("#update_password").removeAttr("disabled")
+                        }
+                    }
+                })
+            }
+        }
+        function updatePassword()
+        {
+            
+            let new_password=$("#new_password").val()
+            let confirm_password=$("#confirm_password").val()
+            let counter=0
+           
+           if(new_password==""||new_password==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(confirm_password==""||confirm_password==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(new_password!=confirm_password)
+            {
+                alert("Password and Confirm Password don't match")
+                counter=1
+            }
+            else{
+                //do nothing 
+            }
+            if(counter=1)
+            {
+                $.ajax({
+                    url:"http://localhost:7000/immigration-canada/set-new-password",
+                    type:"POST",
+                    dataType:"json",
+                    async:false,
+                    data:{
+                        "new_password":new_password
+                    },
+                    success:function(response)
+                    {
+                        console.log(response)
+                        alert("Password changed success")
+                    }
+                })
+                window.location.reload()
+            }
+            //You need to call 2 apis verify password and update password
+        }
+    </script>
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  onclick="l1()">MY APPLICATION</a>
+                        <a href="/immigration-canada/submit-webform">WEBFORM</a>
+                        <a href="/immigration-canada/help-section-user"> HELP CENTRE</a>
+                        <a href="/immigration-canada/processing-time-user">PROCESSING TIME</a>
+                   
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
+    <br>
+    <div class="row right_user_panel">
+        <div class="col-xs-5">
+            <h1 class="user_name"></h1>
+        </div>
+        <div class="col-xs-2"></div>
+        <div class="col-xs-5 ">
+            <a href="/immigration-canada/application" class="link-primary user_link">
+                New Application
+            </a>
+            <a href="/immigration-canada/account-profile" class="link-primary user_link">
+                Account Profile
+            </a>
+            <a onclick="LogoutUser()" class="link-primary user_link">
+                Logout
+            </a>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Update Applicant Info</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-4">
+                            <label for="">Email</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text"
+                            class="form-control"
+                            id="user_email"
+                            disabled>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-4">
+                            <label for="">Phone</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text"
+                            class="form-control"
+                            id="user_phone"
+                            disabled>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-3">
+                            <button 
+                            type="button"
+                             class="btn btn-danger"
+                            onclick="editaccountInfo()">
+                        Edit</button>
+                        </div>
+                   
+                        <div class="col-xs-3">
+                            <button
+                            type="button"
+                            class="btn btn-danger"
+                            id="update_button"
+                            onclick="updateAccountInfo()"
+                            disabled>
+                        Update</button>
+                        </div>
+                        <div class="col-xs-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2"></div>
+        
+
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Update Password</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-4">
+                            <label for="">Old Password</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="password"
+                            class="form-control"
+                            id="old_password"
+                            >
+                        </div>
+                    
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-5"></div>
+                        <div class="col-xs-2">
+                            <button class="btn btn-danger"
+                            onclick="checkPassword()">Check</button>
+                        </div>
+                        <div class="col-xs-5"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-4">
+                            <label for="">New Password</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="password"
+                            class="form-control"
+                            id="new_password"
+                            disabled
+                            >
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <br> 
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-4">
+                            <label for="">Confirm Password</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="password"
+                            class="form-control"
+                            id="confirm_password"
+                            disabled
+                            >
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-5"></div>
+                        <div class="col-xs-2">
+                            <button class="btn btn-danger"
+                            type="button"
+                            id="update_password"
+                            disabled
+                            onclick="updatePassword()">Update</button>
+                        </div>
+                        <div class="col-xs-5"></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    
+</body>
+</html>

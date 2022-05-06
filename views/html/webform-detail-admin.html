@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function()
+        {
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/get-webform",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                    buildTable(response)
+                }
+            })
+        })
+        function buildTable(data)
+        {
+            console.log("Inside Build Table")
+            $("#webform_id").val(data[0].webform_id)
+
+            $("#webform_dob").val(data[0].date_of_birth)
+            $("#webform_email").val(data[0].email)
+            $("#webform_mobile").val(data[0].mobile)
+            $("#webform_type_of_enquiry").val(data[0].webform_type)
+            $("#webform_enquiry").val(data[0].webform_message)
+
+        }
+        function navigateBack()
+        {
+            window.location.href="/immigration-canada/webforms"
+        }
+
+    </script>
+    <style>
+        textarea{
+            resize:none;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <h1>IRCC WEBFORM</h1>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8 panel panel-primary">
+            <div class="panel-heading" id="application_heading">USER WEBFORM ENQUIRY</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label for="">WebForm ID</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text"
+                        class="form-control"
+                        id="webform_id"
+                        disabled>
+                    </div>
+
+                </div>
+                
+            
+                <br>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label for="">Date of Birth</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text"
+                        class="form-control"
+                        id="webform_dob"
+                        disabled>
+                    </div>
+                </div>
+                <br>  
+                <div class="row">
+                    <div class="col-xs-4">
+                       <label for="">Email Address</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text"
+                        class="form-control"
+                        id="webform_email"
+                        disabled>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label for="">Mobile Number</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text"
+                        class="form-control"
+                        id="webform_mobile"
+                        disabled>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label for="">Type of Application/Enquiry</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text"
+                        class="form-control"
+                        id="webform_type_of_enquiry"
+                        disabled>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label for="">Enquiry</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <textarea name="" 
+                        id="webform_enquiry"
+                        class="form-control"
+                        disabled
+                         cols="30" rows="10"></textarea>
+                    
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label for="">
+
+                        </label>
+                    </div>
+                    <div class="col-xs-4">
+                        <button class="btn btn-danger"
+                        onclick= navigateBack() >Return</button>
+                    </div>
+                    <div class="col-xs-4"></div>
+                </div>
+
+        </div>
+
+    </div>
+
+    
+</body>
+</html>

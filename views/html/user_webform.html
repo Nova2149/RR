@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../CSS/user_home.css">
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <script src="../JS/user-login.js"></script>
+    <script>
+        function submitWebform()
+        {
+            console.log("Submit WebForm clicked Successfully")
+            let webform_type=document.getElementById("type_of_application").value
+            let webform_message=document.getElementById("webform_message").value
+            let family_name=document.getElementById("family_name").value
+            let given_name=document.getElementById("given_name").value
+            let email_address=document.getElementById("email_address").value
+            let date_of_birth=document.getElementById("date_of_birth").value
+            let application_number=document.getElementById("application_number").value
+            let mobile_number=document.getElementById("mobile_number").value
+            console.log(webform_type)
+            console.log(webform_message)
+            console.log(family_name)
+            console.log(given_name)
+            console.log(email_address)
+            console.log(date_of_birth)
+            console.log(application_number)
+            console.log(mobile_number)
+            let counter=0;
+
+            if(webform_message==""||webform_message==null)
+            {
+                alert("Missing Fields")
+                counter=1;
+            }
+            else if(family_name==""||family_name==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(given_name==""||given_name==null)
+            {
+                alert("Missing Fields")
+                counter=1;
+            }
+            else if(email_address==""||email_address==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(!/\S+@\S+\.\S+/.test(email_address))
+            {
+                alert("Invalid Email")
+                counter=1;
+            }
+            else if(date_of_birth==""||date_of_birth==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(application_number==""||application_number==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(mobile_number==""||mobile_number==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(!/^[0-9]+$/.test(mobile_number))
+           {
+               alert("Invalid Mobile Number")
+               counter=1;
+           }
+           else if(mobile_number.length!=10)
+           {
+               alert("Invalid Mobile Number")
+               counter=1
+           }
+            else{
+                //do nothing
+            }
+
+            if(counter==0)
+            {
+                $.ajax({
+                url:"http://localhost:7000/immigration-canada/submit-webform",
+                type:"POST",
+                datatype:"json",
+                async:false,
+                data:{
+                    "webform_type":webform_type,
+                    "webform_message":webform_message,
+                    "email":email_address,
+                    "date_of_birth":date_of_birth,
+                    "application_number":application_number,
+                    "mobile":mobile_number
+                },
+                success:function(response)
+                {
+                    console.log(response)
+                    if(response.count==1)
+                    {
+                        alert("Invalid Application Number entered")
+                    }
+                    else if(response.count==0)
+                    {
+                        alert("Your Webform has been submitted successfully")
+                    }
+                }
+            })
+            }
+
+   
+        }
+    </script>
+    <style>
+        textarea{
+            resize:none
+        }
+    </style>
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  onclick="l1()">MY APPLICATION</a>
+                        <a href="/immigration-canada/submit-webform">WEBFORM</a>
+                        <a href="/immigration-canada/help-section-user"> HELP CENTRE</a>
+                        <a href="/immigration-canada/processing-time-user">PROCESSING TIME</a>
+                   
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <h1>WebForm Enquiry</h1>
+            <br>
+            <label for="">Type of application</label>
+            <select class="form-control" name="" id="type_of_application">
+                <option value="Study">Study </option>
+                <option value="Work">Work </option>
+                <option value="Visitor">Visitor</option>
+                <option value="Permanent Residency">
+                    Permanent Residency
+                </option>
+
+            </select>
+            <br>
+            <label for="">Your Web Enquiry</label>
+            <textarea  class="form-control" name="" id="webform_message" cols="30" rows="10" placeholder="Write your problem in not more than 1200 words"></textarea>
+            <br>
+            <hr>
+            <h1>Applicant Information</h1>
+            <label for="">Family Name</label>
+            <input type="text" class="form-control" id="family_name" placeholder="Family Name">
+            <br>
+            <label for="">Given Name</label>
+            <input type="text" class="form-control" id="given_name" placeholder="Given Name" >
+            <br>
+            <label for="">Email Address</label>
+            <input type="text" class="form-control" id="email_address" placeholder="Email">
+            <br>
+            <label for="">Date of Birth</label>
+            <input type="date" class="form-control" id="date_of_birth" placeholder="Select Date">
+            <br>
+            <label for="">Application Number</label>
+            <input type="text" class="form-control" id="application_number" placeholder="Application Number">
+            <br>
+            <label for="">Mobile Number</label>
+            <input type="text" class="form-control" id="mobile_number" placeholder="Mobile Number">
+            <br>
+            <button class="btn btn-primary" onclick="submitWebform()">Submit</button>
+
+        </div>
+        <div class="col-xs-4"></div>
+    </div>
+</body>
+</html>

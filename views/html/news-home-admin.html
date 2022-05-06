@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        //var news_heading="";
+        $(function()
+        {
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/getnews",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                    buildTable(response)
+                }
+
+            })
+        })
+        function buildTable(data)
+        {   
+            let table=document.getElementById("news_info")
+            let row=''
+            for(let i=0;i<data.length;i++)
+            {
+                row+=`
+                    <tr>
+                        <td>${data[i].news_heading}</td>
+                        <td>
+                            <button class="btn btn-primary" 
+                            onclick="editNews('${data[i].news_heading}')">Edit
+                            </button>
+                        </td>
+                    </tr>`
+
+            }
+            row+=`<tr>
+                <td>Add New News</td>
+                <td>
+                    <button class="btn btn-success" onclick=AddNews()>Add
+                            </button></td>`
+            table.innerHTML+=row
+            
+        }
+        function editNews(news_heading)
+        {   
+            console.log("Inside News Heading")
+            console.log(news_heading)
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/current-news",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "news_heading":news_heading
+                },
+                success:function(response)
+                {
+                    console.log(response)
+                }
+
+            })
+            window.location.href="/immigration-canada/news-edit-admin"
+        }
+        function AddNews()
+        {
+            window.location.href="/immigration-canada/news-section"
+        }
+
+    </script>
+    <script>
+        function Logout()
+        {
+            console.log("Inside Logout")
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/admin-logout",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+            window.location.href="/immigration-canada/admin-login"
+
+        }
+    </script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  href="/immigration-canada/users">USERS</a>
+                        <a href="/immigration-canada/applications-admin">APPLICATIONS</a>
+                        <a href="/immigration-canada/news-home-admin"> NEWS SECTION</a>
+                        <a href="/immigration-canada/webforms">WEBFORMS</a>
+                        <a href="/immigration-canada/help-section">HELP CENTRE SECTION</a>
+                        <a href="/immigration-canada/processingTime" >PROCESSING TIME</a>
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+            
+            <a onclick=Logout() class="logout_link">
+                Logout
+            </a>
+        
+         
+         
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <h1>Latest News Section</h1>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <table class="table">
+                <tr>
+                  
+                    <th>News Topic</th>
+                    <th>Actions</th>
+                </tr>
+                <tbody id="news_info"></tbody>
+            </table>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+   
+</html>

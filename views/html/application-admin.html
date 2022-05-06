@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function()
+        {
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/get-all-applications",
+                type:"GET",
+                dataType:"json",
+                async:false,
+                success:function(response)
+                {
+                    console.log(response)
+                    buildTable(response)
+                }
+            })
+        })
+        function buildTable(data)
+        {   
+            console.log("Inside the Build Table")
+            let table=document.getElementById("application_info")
+            let row=''
+            for(let i=0;i<data.length;i++)
+            {
+                    row+=`
+                    <tr>
+                        <td>${data[i].application_number}</td>
+                        <td>${data[i].application_type}</td>
+                        <td>${data[i].user_id}</td>
+                        <td>${data[i].application_status}</td>
+                        <td>${data[i].medical_status}</td>
+                        <td>${data[i].background_status}</td>
+                        <td>
+                            <button class="btn btn-primary"
+                            onclick=viewApplication('${data[i].application_number}')>
+                            View
+                            </button>
+
+                    </tr>`
+            }
+            table.innerHTML+=row
+        }
+        function viewApplication(application_number)
+        {
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/get-application",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "application_number":application_number
+                },
+                success:function(response)
+                {
+                    console.log(response)
+
+                }
+            })
+            window.location.href="/immigration-canada/application-detail-admin"
+        }
+    </script>
+    <script>
+          function Logout()
+        {
+            console.log("Inside Logout")
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/admin-logout",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+            window.location.href="/immigration-canada/admin-login"
+
+        }
+    </script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+</head>
+<body>
+    <!--Temp Code Starts Here-->
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  href="/immigration-canada/users">USERS</a>
+                        <a href="/immigration-canada/applications-admin">APPLICATIONS</a>
+                        <a href="/immigration-canada/news-home-admin"> NEWS SECTION</a>
+                        <a href="/immigration-canada/webforms">WEBFORMS</a>
+                        <a href="/immigration-canada/help-section">HELP CENTRE SECTION</a>
+                        <a href="/immigration-canada/processingTime" >PROCESSING TIME</a>
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+            
+            <a onclick=Logout() class="logout_link">
+                Logout
+            </a>
+        
+         
+         
+        </div>
+    </div>
+    <!--Temp Code Ends Here-->
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <h1>IRCC APPLICATIONS</h1>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="row">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-8">
+                <table class="table">
+                    <tr>
+                        <th>Application Number</th>
+                        <th>Application type</th>
+                        <th>Applicant ID</th>
+                        <th>Application Status</th>
+                        <th>Medical status</th>
+                        <th>Background status</th>
+                        <th>Action</th>
+    
+                    </tr>
+                    <tbody id="application_info"></tbody>
+                </table>    
+            </div>
+            <div class="col-xs-2"></div>
+        </div>
+    </div>
+    
+</body>
+</html>

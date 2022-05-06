@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <link rel="stylesheet" href="../CSS/user_home.css">
+    <script src="../JS/user-login.js"></script>
+</head>
+<script>
+    $(function()
+    {
+        $.ajax({
+            url:"http://localhost:7000/immigration-canada/get-user-name",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                console.log(response[0].user_given_name)
+                editTable(response)
+            }
+        })
+        $.ajax({
+            url:"http://localhost:7000/immigration-canada/get-user-applications",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                buildTable(response)
+
+            }
+        })
+    })
+    function buildTable(data)
+    {
+        console.log("Inside the Build Table as of now")
+        let table=document.getElementById("user_application_info")
+        let row=''
+        for(let i=0;i<data.length;i++)
+        {
+            row+=`<tr>
+                <td>${data[i].application_number}</td>
+                <td>${data[i].application_type}</td>
+                <td>${data[i].application_status}</td>
+                <td>${data[i].medical_status}</td>
+                <td>${data[i].background_status}</td>
+                    `
+        }
+        table.innerHTML+=row;
+    }
+    
+    function editTable(data)
+    {
+        $(".user_name").text(data[0].user_given_name+"'s  Account")
+    }
+
+</script>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  onclick="l1()">MY APPLICATION</a>
+                        <a href="/immigration-canada/submit-webform">WEBFORM</a>
+                        <a href="/immigration-canada/help-section-user"> HELP CENTRE</a>
+                        <a href="/immigration-canada/processing-time-user">PROCESSING TIME</a>
+                   
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
+    <br>
+    <div class="row right_user_panel">
+        <div class="col-xs-5">
+            <h1 class="user_name"></h1>
+        </div>
+        <div class="col-xs-2"></div>
+        <div class="col-xs-5 ">
+            <a href="/immigration-canada/application" class="link-primary user_link">
+                New Application
+            </a>
+            <a href="/immigration-canada/account-profile" class="link-primary user_link">
+                Account Profile
+            </a>
+            <a onclick="LogoutUser()" class="link-primary user_link">
+                Logout
+            </a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <h1>Application Submitted By you </h1>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <table class="table">
+                <tr>
+                    <th>Application Number</th>
+                    <th>Application Type</th>
+                    <th>Application Status</th>
+                    <th>Medical Status</th>
+                    <th>Background Status</th>
+                </tr>
+                <tbody id="user_application_info"></tbody>
+            </table>
+        </div>
+        <div class="colx-s-2"></div>
+
+    </div>
+</body>
+</html>

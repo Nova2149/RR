@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Section</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../CSS/admin_home.css">
+    <link rel="stylesheet" href="../CSS/user_home.css">
+    <script src="../JS/user-login.js"></script>
+    <script>
+
+    </script>
+</head>
+<body>
+    <div class="row row_header">
+        <div class="col-xs-1">
+            
+        </div>
+        <div class="col-xs-8">
+            <nav>
+                <ul>
+                    <li>
+                        <a  onclick="l1()">MY APPLICATION</a>
+                        <a href="/immigration-canada/submit-webform">WEBFORM</a>
+                        <a href="/immigration-canada/help-section-user"> HELP CENTRE</a>
+                        <a href="/immigration-canada/processing-time-user">PROCESSING TIME</a>
+                   
+                        
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
+        <br>
+    <div class="row">
+        <div class="container">
+            <h1>Help Centre</h1>
+            <h3>Search For your queries our Help Section Centre</h3>
+            <input type="text"
+            class="form-control"
+            placeholder="Search Here.."
+            id="u">
+            <br>
+            <div id="help_info"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("u").onkeyup=function()
+        {
+            myFunction()
+        }
+        function myFunction()
+        {
+            let u=$("#u").val()
+            console.log(u)
+            $.ajax({
+                url:"http://localhost:7000/immigration-canada/search-help",
+                type:"POST",
+                datatype:"json",
+                data:{
+                    "text":u
+                },
+                success:function(response)
+                {
+                    console.log(response)
+                    buildTable(response)
+                }
+            })
+        }
+        function buildTable(data)
+       {
+           if(data==""||data==null)
+           {
+            let table=document.getElementById("help_info")
+            table.innerHTML=``;
+            table.innerHTML=`<h2>No Result Found</h2>`
+           }
+           else
+           {
+                let table=document.getElementById("help_info")
+                table.innerHTML=``;
+                let row=''
+                table.innerHTML='';
+                for(let i=0;i<data.length;i++)
+                {
+                    row+=`
+                    <li class="news_li"><a onclick="viewHelp('${data[i]}')">
+                        ${data[i]}
+                        
+                        </a></li>
+                        <br>`
+                }
+                table.innerHTML+=row
+
+           }
+      
+       }
+
+       function viewHelp(current_help)
+       {
+           console.log(current_help)
+           $.ajax({
+               url:"http://localhost:7000/immigration-canada/current-help",
+               type:"POST",
+               dataType:"json",
+               async:false,
+               data:{
+                   "help_heading":current_help
+               },
+               success:function(response)
+               {
+                   console.log(response)
+               }
+           })
+           window.location.href="/immigration-canada/current-help-user"
+       }
+    </script>
+</body>
+</html>

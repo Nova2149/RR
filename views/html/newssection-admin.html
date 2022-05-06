@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New News</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        textarea{
+            resize:none;
+        }
+    </style>
+    <script>
+        function submitNewsForm()
+        {
+            let news_heading=$("#news_heading").val()
+            let news_description=$("#news_description").val()
+
+            console.log(news_heading)
+            console.log(news_description)
+            let counter=0
+            if(news_heading==""||news_heading==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else if(news_description==""||news_description==null)
+            {
+                alert("Missing Fields")
+                counter=1
+            }
+            else{
+                //Do Nothing
+            }
+            if(counter==0)
+            {
+                $.ajax({
+                    url:"http://localhost:7000/immigration-canada/add-new-news",
+                    type:"POST",
+                    dataType:"json",
+                    data:{
+                        "news_heading":news_heading,
+                        "news_description":news_description
+                    },
+                    success:function(response)
+                    {
+                        console.log(response)
+                        alert("New News Inserted")
+                    }
+                })
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="row">
+                <h1>Add New Immigration News</h1>
+            </div>
+            <br>
+            <div class="row">
+                <div class="panel panel-success">
+                <div class="panel-heading">News Section</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Topic/Title</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control"
+                            id="news_heading"
+                            placeholder="Enter Title">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Topic Description</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <textarea name="" id="news_description" 
+                            cols="30" 
+                            rows="20"
+                            placeholder="Enter Description"
+                            class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4"></div>
+                        <div class="col-xs-4">
+                            <button class="btn btn-info" onclick="submitNewsForm()">Add</button>
+                        </div>
+                        <div class="col-xs-4"></div>
+                    </div>
+
+                </div>
+
+
+                </div>
+                
+
+            </div>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</body>
+</body>
+</html>
