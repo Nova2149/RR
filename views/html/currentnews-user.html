@@ -30,10 +30,10 @@
             let table=document.getElementById("my_news")
             let row=``
             row=`
-            <h1>${data['news_heading']}</h1>
+            <h1 id="news_h">${data['news_heading']}</h1>
             <br>
             <blockquote>
-            <p>${data['news_description']}
+            <p id="news_d">${data['news_description']}
             </blockquote>`
             table.innerHTML+=row
         }

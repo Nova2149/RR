@@ -341,14 +341,15 @@ app.post("/immigration-canada/submit-application",(req,res)=>
         if(err) throw err;
         if(result==""||result==null)
         {
-            let sql1=`insert into ic_application(user_id,application_type,ques1,ques2,ques3,date_of_birth,file_name,application_status)
-            values(?,?,?,?,?,?,?,?) `;
-            connection.query(sql1,[u_id,data.application_type,
+            let sql1=`insert into ic_application(user_id,application_type,ques1,ques2,ques3,date_of_birth,file_name,application_status,medical_status,background_status)
+            values(?,?,?,?,?,?,?,?,?,?)`;
+            connection.query(sql1,[u_id,
+            data.application_type,
             data.ques1,
             data.ques2,
             data.ques3,
             data.date_of_birth,
-            data.file_name,"submitted"],(er1,rs1)=>
+            data.file_name,"submitted","submitted","submitted"],(er1,rs1)=>
             {
                 if(er1) throw er1;
                 console.log(rs1)
@@ -362,6 +363,7 @@ app.post("/immigration-canada/submit-application",(req,res)=>
         else{
             //File Name is already in use ,choose a different File Name
             console.log("File Name is already in use,Choose a different File Name")
+            
             res.send({"count":1})
         }
     })
@@ -399,40 +401,55 @@ app.post("/immigration-canada/submit-webform",(req,res)=>
      let appData=fs.readFileSync('JSON/user_id.json')
      let my_data=JSON.parse(appData)
      let u_id=my_data.user_id
-
-    let sql=`select * from ic_application where application_number=?`
-    connection.query(sql,[data.application_number],(error,result)=>
-    {
-        if(error) throw error;
-        if(result==null||result=="")
-        {
-            console.log("Wrong Application Number ,This Application doesn't exists")
-            res.send({
-                "count":1
-            })
-        }
-        else{
-            let sql1=`insert into ic_webform(user_id,webform_type,
-                webform_message,
-                email,date_of_birth,application_number,mobile) values(?,?,?,?,?,?,?)`
-
-            connection.query(sql1,[u_id,
-                data.webform_type,
-                data.webform_message,
-                data.email,
-                data.date_of_birth,
-            data.application_number,
-            data.mobile],(error1,result1)=>
+     let sql_initial=`select * from ic_register where user_email=?`
+     connection.query(sql_initial,[data.email],(error,result)=>
+     {
+         if(error) throw error;
+         if(result==""||result==null)
+         {
+             res.send({
+                 "count":1
+             })
+         }
+         else{
+            let sql=`select * from ic_application where application_number=?`
+            connection.query(sql,[data.application_number],(error,result)=>
             {
-                if(error1) throw error1;
-                console.log("Webform Submitted Successfully")
-                console.log(result1)
-                res.send({
-                    "count":0
-                })
+                if(error) throw error;
+                if(result==null||result=="")
+                {
+                    console.log("Wrong Application Number ,This Application doesn't exists")
+                    res.send({
+                        "count":1
+                    })
+                }
+                else{
+                    let sql1=`insert into ic_webform(user_id,webform_type,
+                        webform_message,
+                        email,date_of_birth,application_number,mobile) values(?,?,?,?,?,?,?)`
+        
+                    connection.query(sql1,[u_id,
+                        data.webform_type,
+                        data.webform_message,
+                        data.email,
+                        data.date_of_birth,
+                    data.application_number,
+                    data.mobile],(error1,result1)=>
+                    {
+                        if(error1) throw error1;
+                        console.log("Webform Submitted Successfully")
+                        console.log(result1)
+                        res.send({
+                            "count":0
+                        })
+                    })
+                }
             })
-        }
-    })
+         }
+
+     })
+
+    
 })
 
 
@@ -959,6 +976,11 @@ app.post("/immigration-canada/search-entered-news",(req,res)=>
   fs.writeFileSync('JSON/search.json',JSON.stringify({
       "search_text":search_text
   }))
+  res.send({
+
+
+    "search_text":search_text
+  })
 
 })
 //get request
@@ -1142,7 +1164,7 @@ app.post("/immigration-canada/check-password",(req,res)=>
     let u_id=data.user_id
     console.log(u_id)
 
-    let sql=`select * from ic_register where user_password=?`
+    let sql=`select * from ic_register where user_password=? and user_id=?`
     connection.query(sql,[old_password,u_id],(error,result)=>
     {
         if(error) throw error;

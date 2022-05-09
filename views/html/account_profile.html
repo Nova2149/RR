@@ -148,6 +148,9 @@
                             $("#confirm_password").removeAttr("disabled")
                             $("#update_password").removeAttr("disabled")
                         }
+                        else{
+                            alert("Invalid Password")
+                        }
                     }
                 })
             }
@@ -177,7 +180,7 @@
             else{
                 //do nothing 
             }
-            if(counter=1)
+            if(counter==0)
             {
                 $.ajax({
                     url:"http://localhost:7000/immigration-canada/set-new-password",
@@ -280,6 +283,7 @@
                         <div class="col-xs-3">
                             <button 
                             type="button"
+                            id="edit_account"
                              class="btn btn-danger"
                             onclick="editaccountInfo()">
                         Edit</button>

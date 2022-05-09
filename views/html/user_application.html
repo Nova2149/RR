@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>New Application</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -33,7 +33,9 @@
     }
 
         function submitApplication()
-        {
+        {     var todayDate = new Date().toISOString().slice(0, 10);
+            console.log(todayDate);
+
             console.log("Submit Application clicked successfully")
             let user_type_of_application=document.getElementById("type_of_application").value
             let user_ques1=document.getElementById("ques1").value
@@ -81,6 +83,11 @@
                 alert("Missing Fields")
                 counter=1
             }
+            else if(user_dob>=todayDate)
+            {
+                alert("Invalid Date")
+                counter=1
+            }
             else if(user_file==null||user_file=="")
             {
                 alert("Missing Fields")
@@ -110,6 +117,13 @@
                 success:function(response)
                 {
                     console.log(response)
+                    if(response.count==0)
+                    {
+                        alert("Application Submitted Successfully")
+                    }
+                    else{
+                        alert("File name is in use choose a different one")
+                    }
                 }
 
             })

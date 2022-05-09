@@ -654,6 +654,16 @@
                counter=1
 
            }
+           else if(!/^[a-zA-Z]+$/.test(user_family_name))
+           {
+               alert("Invalid Family Name")
+               counter=1
+           }
+           else if(!/^[a-zA-Z]+$/.test(user_given_name))
+           {
+               alert("Invalid Given  Name")
+               counter=1
+           }
            else if(user_given_name==""||user_given_name==null)
            {
                alert("Missing Fields")
