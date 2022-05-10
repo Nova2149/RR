@@ -42,7 +42,18 @@
         //Here we will proceed after we reach the specific point
         let news_description=$("#news_description").val()
         let news_heading=$("#news_title").val()
-        $.ajax({
+        let counter=0
+        if(news_description==""||news_description==null)
+        {
+            counter=1;
+            alert("Missing Fields")
+        }
+        else{
+            //Do Nothing
+        }
+        if(counter==0)
+        {
+            $.ajax({
             url:"http://localhost:7000/immigration-canada/update-news",
             type:"POST",
             dataType:"json",
@@ -53,9 +64,15 @@
             success:function(response)
             {
                 console.log(response)
+                setTimeout(()=>
+                {
+                    alert("News Updated success")
+                },3000)
             }
 
         })
+        }
+       
     }
     </script>
 </head>

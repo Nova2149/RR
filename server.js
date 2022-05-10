@@ -195,7 +195,7 @@ app.post("/immigration-canada/login",(req,res)=>
     let data=req.body
     console.log(data)
 
-    let sql=`select * from ic_register where user_email=? and user_password=?`
+    let sql=`select * from ic_register where user_email=? and user_password=? and user_status=1`
     connection.query(sql,[data.user_email,data.user_password],(err,result)=>
     {
         if (err) throw err;

@@ -35,6 +35,7 @@
         function editProcessingTime()
         {
            $(".pt_input").removeAttr('disabled')
+           $("#update_ptime_button").removeAttr('disabled')
 
         }
         function updateProcessingTime()
@@ -47,7 +48,55 @@
             console.log(work)
             console.log(visitor)
             console.log(permanent_residency)
-            $.ajax({
+            let counter=0;
+            if(study==""||study==null)
+            {
+                alert("Missing Fields")
+                counter=1;
+
+            }
+            else if(work==""||work==null)
+            {
+                alert("Missing Fields")
+                counter=1;
+            }
+            else if(visitor==""||visitor==null)
+            {
+                alert("Missing Fields")
+                counter=1;
+            }
+            else if(permanent_residency==""||permanent_residency==null)
+            {
+                alert("Missing Fields")
+                counter=1;
+            }
+            else if(!/^[0-9]+$/.test(study))
+            {
+                alert("Invalid Processing Time")
+                counter=1
+            }
+            else if(!/^[0-9]+$/.test(work))
+            {
+                alert("Invalid Processing Time")
+                counter=1
+            }
+            else if(!/^[0-9]+$/.test(permanent_residency))
+            {
+                alert("Invalid Processing Time")
+                counter=1
+            }
+            else if(!/^[0-9]+$/.test(visitor))
+            {
+                alert("Invalid Processing Time")
+                counter=1
+            }
+            else{
+                //Do Nothing
+            }
+
+            if(counter==0)
+            {
+                $.ajax({
                 url:"http://localhost:7000/immigration-canada/processing-time",
                 type:"POST",
                 dataType:"json",
@@ -60,8 +109,11 @@
                 success:function(response)
                 {
                     console.log(response)
+                    alert("Processing Time Updated")
                 }
             })
+            }
+         
 
         }
     </script>
@@ -189,6 +241,8 @@
                 <div class="col-xs-3"></div>
                 <div class="col-xs-3">
                     <button class="btn btn-success" 
+                    id="update_ptime_button"
+                    disabled
                     onclick=updateProcessingTime()>Update</button>
                 </div>
             </div>
